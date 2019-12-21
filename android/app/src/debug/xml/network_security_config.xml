@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+       <trust-anchors>
+           <certificates src="system" />
+       </trust-anchors>
+   </base-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain>localhost</domain>
+        <domain includeSubdomains="true">localhost:8081</domain>
+    </domain-config>
+</network-security-config>
+
+
+react-native bundle --platform android --dev false --entry-file index.and.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
