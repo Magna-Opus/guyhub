@@ -256,12 +256,11 @@ setModalVisible(visible) {
  
                 }
                 <Modal
-          style={{backgroundColor: 'rgba(0,0,0,0.5)'}}
           avoidKeyboard={true}
-          visible={this.state.modalVisible}
+          isVisible={this.state.modalVisible}
           >
               
-          <SafeAreaView style={[styles.containers, modalBackgroundStyle]}>
+          <SafeAreaView style={[styles.containers]}>
             <View style={innerContainerTransparentStyle}>
               <View style={{flexDirection:'row',fontSize:16,color:'#0078d7',marginBottom:10}}>
               
@@ -297,7 +296,7 @@ setModalVisible(visible) {
                             <View style={{flexDirection:'row',justifyContent:'space-between'}}>
              <View style={{width:'45%'}}>
                             <NumericInput
-                            
+                            editable={false}
             value={this.state.minage} 
             onChange={minage => this.setState({minage})} 
             onLimitReached={(isMax,msg) => console.log(isMax,msg)}
@@ -315,7 +314,7 @@ setModalVisible(visible) {
 </View>
 <View style={{width:'45%'}}>
             <NumericInput 
-            
+            editable={false}
             value={this.state.maxage} 
             onChange={maxage => this.setState({maxage})} 
             onLimitReached={(isMax,msg) => console.log(isMax,msg)}
@@ -783,7 +782,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
     
   },
   input:{

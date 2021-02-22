@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, Image, TouchableOpacity, Dimensions,TouchableHighlightBase ,Alert,SafeAreaView} from 'react-native';
+import { Platform, StyleSheet, Text, Linking, View, Image, TouchableOpacity, Dimensions,TouchableHighlightBase ,Alert,SafeAreaView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -32,7 +32,7 @@ export default class PostList extends Component {
             reason:'',
             modalVisible:false,
             authtoken:'',
-            docheck:true
+            docheck:false
         }
     }
 
@@ -75,7 +75,7 @@ export default class PostList extends Component {
         // console.log(this.state.user_id);
         this.setState({authtoken:userInfo})
         this.setState({user_id:id})
-        console.log("ID is",id)
+        
     }
     componentDidMount(){
         this.getUserData();
@@ -140,13 +140,14 @@ export default class PostList extends Component {
     {
         if(this.state.reason!=='')
         {
+            this.setState({docheck:true})
         console.log(this.props.id,this.props.userid,this.state.reason)
         PostWithToken('report', {authtoken:this.state.authtoken,author:this.props.userid,post_id:this.props.id,reason:this.state.reason,type:'Post'}).then((result)=>{
 
             if(result.status===201){
                 this.setState({errors:result.message});
             this.setState({reason:''})
-            this.setState({docheck:true})
+            this.setState({docheck:false})
             }
           
         })
@@ -204,14 +205,14 @@ getExtention = (filename) => {
         <TouchableOpacity style={{width:this.props.width-30,borderRadius:4,marginBottom:10, height:null,padding:5, backgroundColor:'white'}} onPress={()=> Actions.singlepost({id:this.props.id,author:this.props.userid})}>
             
             <Modal
-                style={{backgroundColor: 'rgba(0,0,0,0.5)'}}
+                
                 avoidKeyboard={true}
                
    
-          visible={this.state.modalVisible}
+          isVisible={this.state.modalVisible}
           >
        
-          <SafeAreaView style={[styles.containers, modalBackgroundStyle]} behavior="padding" enabled>
+          <SafeAreaView style={[styles.containers,]} behavior="padding" enabled>
             <View style={innerContainerTransparentStyle}>
               <View style={{flexDirection:'row',fontSize:16,color:'#0078d7',marginBottom:10}}>
               <TouchableOpacity onPress={() => {
@@ -249,17 +250,17 @@ getExtention = (filename) => {
                                         </View>
                                     </RadioButton.Group>
                                         {/* </View> */}
-                                        {this.state.docheck?
+                                       
                 <TouchableOpacity onPress={()=>this.reportMessage()} style={styles.buttonContainer} 
-                  disabled={this.state.disabledLogin}>
+                  disabled={this.state.docheck}>
                 <Text  style={styles.buttonText}>SUBMIT</Text>
                 </TouchableOpacity>
-                :null}
+                
                                </View>
                                </View>
                                </SafeAreaView>
                                </Modal>
-                               <View style={{height:80,backgroundColor:'#fff'}}>
+                               <View style={{backgroundColor:'#fff'}}>
             <View>
             {/* <Image source={require('./../../src/images/profile_usr_pholder.png')} style={{width:28,height:28,borderRadius:30}} /> */}
                 <Text style={{fontSize:16,textAlign:'left',color:'#333',textTransform:'capitalize'}}>{this.props.title}</Text>
@@ -269,7 +270,7 @@ getExtention = (filename) => {
                     name='calendar-o'
                     type='font-awesome'
                     color='#ccc'></FontAwesome>&nbsp;{this.props.postedDate}</Text>
-            <TouchableOpacity onPress={()=>this.downloadImage()} >
+            <TouchableOpacity onPress={()=>Platform.OS=='ios'?Linking.openURL(this.props.imageUrl):this.downloadImage()} >
             <FontAwesome5
                     raised
                     name='file-download'
@@ -281,7 +282,7 @@ getExtention = (filename) => {
             </View>
      <Text style={{marginBottom:10}}>{this.props.post_type} Post by {this.props.username}</Text>
             </View>
-            <View style={{width:this.props.width-40,height:150,marginTop:10}}>
+            <View style={{width:this.props.width-40,height:150}}>
                 <Image source={{uri: this.state.imageUrl}}resizeMode="cover" style={{flex:1,width:null, height:null}}/>
             </View>
             {/* <View>
@@ -348,7 +349,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#ecf0f1',
         
       },
       input:{

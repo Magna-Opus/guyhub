@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Modal,Text, View, Image, TouchableOpacity, TextInput,SafeAreaView ,ScrollView,Dimensions} from 'react-native';
+import { Platform, StyleSheet,Text, View, Image, TouchableOpacity, TextInput,SafeAreaView ,ScrollView,Dimensions} from 'react-native';
 import {createAppContainer, createMaterialTopTabNavigator,createStackNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -8,7 +8,7 @@ import PublicTweets from './../tweetstab/PublicTweets';
 import { Picker, Form } from "native-base";
 import {PostWithToken } from './../../services/PostWithToken';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import Modal from 'react-native-modal'
 import Friends from './../connectionstab/Friends';
 import { Actions } from 'react-native-router-flux';
 import {NavigationEvents} from 'react-navigation';
@@ -44,7 +44,7 @@ export default class Tweets extends React.Component {
       name:'',
       tweet:'',
       type:'',
-      docheck:true,
+      docheck:false,
       errors:'',
       modalVisible:false,
       post_type:'',
@@ -73,7 +73,7 @@ export default class Tweets extends React.Component {
       }
       else
       {
-        this.setState({docheck:false})
+        this.setState({docheck:true})
         this.setState({errors:""});
       var today = new Date();
       var dd = String(today.getDate()).padStart(2, '0');
@@ -95,7 +95,7 @@ export default class Tweets extends React.Component {
             this.setState({type:'',tweet:'',modalVisible:false,errors:''}),2000)
           }
          
-          this.setState({docheck:true})
+          this.setState({docheck:false})
         })  
       }
       
@@ -147,9 +147,9 @@ export default class Tweets extends React.Component {
                         <Modal
           animationType='fade'
           transparent={true}
-          visible={this.state.modalVisible}
+          isVisible={this.state.modalVisible}
           >
-          <View style={[styles.containers, modalBackgroundStyle]}>
+          <View style={[styles.containers,]}>
             <View style={innerContainerTransparentStyle}>
               <View style={{flexDirection:'row',fontSize:16,color:'#0078d7',marginBottom:10}}>
               <TouchableOpacity onPress={() => {
@@ -200,10 +200,10 @@ placeholderStyle={{ color: '#a9a9a9',fontSize:14 }}
                                                     <Text style={{marginBottom:10,backgroundColor:'white',padding:10,color:'#a9a9a9',fontSize:12}}>Guyhub has no tolerance for potentially objectionable content, such as nudity, pornography, and profanity or abusive users. Also all users of Guyhub  can flag objectionable content and admin will take action on it in maximum 24 hours if the objection is found to be genuine. </Text>
 
                                   <View style={{position:'relative'}}> 
-                                 {this.state.docheck?
-                            <TouchableOpacity onPress={()=>this.maketweet()} style={styles.buttonContainer} >
+                                
+                            <TouchableOpacity disabled={this.state.docheck} onPress={()=>this.maketweet()} style={styles.buttonContainer} >
                 <Text  style={styles.buttonText}>SUBMIT</Text>
-                </TouchableOpacity>:null}
+                </TouchableOpacity>
                             <View style={{height:40}}>
 
                             </View>
@@ -229,7 +229,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
     
   },
   title: {

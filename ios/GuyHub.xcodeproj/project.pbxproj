@@ -1488,7 +1488,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/GuyHub\"",
 				);
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.8;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1505,8 +1505,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H3XUKV427D;
 				HEADER_SEARCH_PATHS = (
@@ -1532,7 +1532,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/GuyHub\"",
 				);
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.8;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1540,7 +1540,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.guyhub;
 				PRODUCT_NAME = GuyHub;
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = guyhub;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

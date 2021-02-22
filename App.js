@@ -6,6 +6,7 @@
  * @flow
  */
 import React, { Component } from 'react';
+import {YellowBox} from 'react-native';
 import { Router, Scene } from 'react-native-router-flux';
 import Login from './components/Login';
 import Ques from './components/Register';
@@ -43,7 +44,18 @@ import Post from './components/myPosts/posts';
 import Tweet from './components/myTweets/tweet';
 import PrivacyPolicy from './components/Content/privacyPolicy';
 import Dashboard from './components/Dashboard';
-export default class App extends Component {    
+export default class App extends Component {  
+    
+    componentDidMount=()=>{
+    YellowBox.ignoreWarnings(['Warning: ...']);
+    YellowBox.ignoreWarnings(['Attempted to invoke']);
+    YellowBox.ignoreWarnings([
+      'VirtualizedLists should never be nested', // TODO: Remove when fixed
+    ])
+    console.reportErrorsAsExceptions = false;
+    }
+
+
     render() {
         return (
             <Router>

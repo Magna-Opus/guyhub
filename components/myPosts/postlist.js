@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import {  Platform, StyleSheet, Text, View, Image, TouchableOpacity, TouchableHighlightBase ,Alert} from 'react-native';
+import {  Platform, StyleSheet, Text, View, Linking, Image, TouchableOpacity, TouchableHighlightBase ,Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -212,7 +212,7 @@ getExtention = (filename) => {
           };
      return(
         <TouchableOpacity style={{width:this.props.width-30,borderRadius:4,marginBottom:10, height:null,padding:5, backgroundColor:'white'}} onPress={()=> Actions.singlepost({id:this.props.id})}>
-            <View style={{height:70,backgroundColor:'#fff'}}>
+            <View style={{backgroundColor:'#fff'}}>
             <View>
             {/* <Image source={require('./../../src/images/profile_usr_pholder.png')} style={{width:28,height:28,borderRadius:30}} /> */}
                 <Text style={{fontSize:16,textAlign:'left',color:'#333',textTransform:'capitalize'}}>{this.props.title}</Text>
@@ -242,7 +242,7 @@ getExtention = (filename) => {
                      size={20}/>
 
             </TouchableOpacity>
-            <TouchableOpacity style={{marginLeft:10}} onPress={()=>this.downloadImage()} >
+            <TouchableOpacity style={{marginLeft:10}} onPress={()=>Platform.OS=='ios'?Linking.openURL(this.props.imageUrl):this.downloadImage()} >
             <FontAwesome5
                     raised
                     name='file-download'

@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { PostImageData } from './../../services/PostImageData';
 import { GetWithoutToken } from './../../services/GetWithoutToken';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
-import ImagePicker from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 import DatePicker from 'react-native-datepicker';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -253,7 +253,7 @@ export default class createJob extends Component {
         const options={
             noData:true
         }
-        ImagePicker.launchImageLibrary(options, response=>{
+        launchImageLibrary(options, response=>{
             //console.log('response', response);
             if(response.uri){
                 
@@ -614,7 +614,7 @@ zIndex: 10
     autoCorrect={false} 
     returnKeyType="next" 
     value={this.state.websiteurl}
-    placeholder='Company Name' 
+    placeholder='Company Website' 
 
     onChangeText={(text) => this.setState({websiteurl:text})}
     placeholderTextColor='#a9a9a9'/>
@@ -690,11 +690,15 @@ zIndex: 10
                                     onChangeText={(text) => this.setState({description:text})}
                                     placeholderTextColor='#a9a9a9'/>
                                     
-                                   <ImageBackground source={backimage} resizeMode="cover" style={{width:'100%',height:60,marginBottom:10}}>
+                                   {this.state.post_image==''?<ImageBackground source={backimage} resizeMode="cover" style={{width:'100%',height:60,marginBottom:10}}>
                                         <TouchableOpacity onPress={this.handleChooseImage} style={{width:'100%',height:40,flex:1,flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
                                             <Text>Choose Company Logo</Text>
                                         </TouchableOpacity>
-                                    </ImageBackground>
+                                    </ImageBackground>:<View  style={{width:'100%',flex:1,}}>
+                                    <Text>Company Logo</Text>
+                                    <TouchableOpacity onPress={this.handleChooseImage} style={{width:'100%',flex:1,}}>
+                                            <Image source={{uri:this.state.post_image}} style={{height:100, width:100, borderRadius:50,alignSelf:'center',marginBottom:20}}/>
+                                        </TouchableOpacity></View>}
                                     
 
                                     <TouchableOpacity onPress={()=>this.createJobs()} style={styles.buttonContainer} 

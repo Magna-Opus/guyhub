@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, Modal, StyleSheet, Text, View,Button, SafeAreaView,Image,Keyboard, TouchableOpacity, ScrollView, Dimensions, KeyboardAvoidingView } from 'react-native';
+import { Platform, StyleSheet, Text, View,Button, SafeAreaView,Image,Keyboard, TouchableOpacity, ScrollView, Dimensions, KeyboardAvoidingView } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import JobList from './../jobscoponents/JobList';
@@ -11,6 +11,7 @@ import {StackActions, NavigationActions, withNavigationFocus } from 'react-navig
 import AutoTags from 'react-native-tag-autocomplete';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Loader from './../../components/loader/loader';
+import Modal from "react-native-modal";
 
 import { GetWithoutToken } from '../../services/GetWithoutToken';
 const{width, height}=Dimensions.get('window');
@@ -303,11 +304,11 @@ onSelectedItemsChangeskills = (selectedItems) => {
                     <Modal
           animationType='fade'
           transparent={true}
-          visible={this.state.modalVisible}
+          isVisible={this.state.modalVisible}
           >
               
 
-          <View style={[styles.containers, modalBackgroundStyle]}>
+          <View style={[styles.containers]}>
             <View style={innerContainerTransparentStyle}>
               <View style={{flexDirection:'row',fontSize:16,color:'#0078d7',marginBottom:10}}>
               <TouchableOpacity onPress={() => {
@@ -607,7 +608,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#ecf0f1',
         
       },
       autocompleteContainer: {

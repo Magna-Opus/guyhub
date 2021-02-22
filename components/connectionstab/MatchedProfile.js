@@ -538,14 +538,14 @@ setModalVisible(visible) {
                         </TouchableOpacity> :null}
                         </View>
                 <Modal
-                                style={{backgroundColor: 'rgba(0,0,0,0.5)'}}
+                                
                                 avoidKeyboard={true}
           
-          visible={this.state.modalVisible}
+          isVisible={this.state.modalVisible}
           >
                      
 
-          <SafeAreaView style={[styles.containers, modalBackgroundStyle]}>
+          <SafeAreaView style={[styles.containers]}>
             <View style={innerContainerTransparentStyle}>
               <View style={{flexDirection:'row',fontSize:16,color:'#0078d7',marginBottom:10}}>
               <TouchableOpacity onPress={() => {
@@ -1015,7 +1015,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
     
   },
   input:{

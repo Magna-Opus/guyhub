@@ -65,7 +65,7 @@ export default class JobList extends Component {
                     this.setState({applymsg:result.message,showmsg:true})
                     setTimeout(()=>{
                         this.setState({showmsg:false})
-                        Actions.editprofile();
+                        
                     },3000)
                 }
                 else{

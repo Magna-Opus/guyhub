@@ -8,7 +8,7 @@ import { PostWithoutToken } from './../../services/PostWithoutToken';
 import { PostWithToken } from './../../services/PostWithToken';
 import { PostImageData } from './../../services/PostImageData';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import ImagePicker from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-community/async-storage';
 import Loader from './../../components/loader/loader';
 import { Picker, Form } from "native-base";
@@ -40,7 +40,7 @@ export default class Home extends Component {
             loading:true,
             content:'',
             authtoken:'',
-            docheck:true,
+            docheck:false,
             category_search:'',
             notfound:'',
             id:'',
@@ -101,8 +101,8 @@ export default class Home extends Component {
         const options={
             noData:true
         }
-        ImagePicker.launchImageLibrary(options, response=>{
-            //console.log('response', response);
+        launchImageLibrary(options, response=>{
+            console.log('response', response);
             if(response.uri){
                 
                 this.setState({post_image:response.uri},()=>console.log("Log image",this.state.post_image))
@@ -168,7 +168,7 @@ export default class Home extends Component {
         console.log("State: ",this.state);
         if(this.state.title!==''&& this.state.content!==''&& this.state.post_type!==undefined&& this.state.category!==undefined&&this.state.post_image!='')
         {
-         this.setState({docheck:false})   
+         this.setState({docheck:true})   
         debugger;
          var data=new FormData;
          data.append('post_type',this.state.post_type);
@@ -177,7 +177,7 @@ export default class Home extends Component {
          data.append('category',this.state.category);
          data.append('post_image', { uri: this.state.post_image, name: Math.round(Math.random() * 100000000) +'screenshot.jpg', type: 'image/jpg' });
         // console.log("This.state",data)
-        
+        console.log(data)
         PostImageData('post/create',data,this.state.authtoken).then((data)=>{
             var responsejson=data;
             console.log(responsejson);
@@ -185,13 +185,13 @@ export default class Home extends Component {
                 this.getPostList();
             this.setState({errors:responsejson.message});
             this.setState({title:'',content:'',post_type:undefined,category:undefined,post_image:''})
-            this.setState({docheck:true})
+            this.setState({docheck:false})
             }
             
             else if(responsejson.status===401)
             {
                 this.setState({errors:responsejson.message});
-                this.setState({docheck:true})
+                this.setState({docheck:false})
 
             }
         })
@@ -251,9 +251,10 @@ getPostList=async()=>{
     
 }
 postByCategory=(cat_slug)=>{    
+    this.setState({loading:true})
     this.setState({category_search:cat_slug},()=>{
         PostWithoutToken('getpost/all?category_search='+this.state.category_search,this.state).then((data)=>{
-            this.setState({loading:true})
+            
 
             var responsejson=data;
             console.log(responsejson);
@@ -309,10 +310,8 @@ checknotification()
         }
      
        // const { postList, imageurls } = this.state;
-        var modalBackgroundStyle = {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)'
-          };
-          var innerContainerTransparentStyle = {backgroundColor: '#fff', padding: 20,width:width-30,
+        
+          var innerContainerTransparentStyle = {backgroundColor: '#fff', padding: 20,
           borderRadius:4};
      return(
          <SafeAreaView style={{flex:1}}>
@@ -407,7 +406,7 @@ checknotification()
                                       
                                         var imageuri;
                                         
-                                             console.log("Post is",singlePost.post_image);
+                                             
                                             //  console.log("Image is",singlePost.post_image.image.file)
                                             // PostData('attachment/?id='+singlePost.post_image,this.state).then((attachments)=>{
                                             //     var imgid=attachments.attachment.id;
@@ -448,14 +447,15 @@ checknotification()
                 </View>
                 {/* add post modal  */}
                 <Modal
-                style={{backgroundColor: 'rgba(0,0,0,0.5)'}}
+                
                 avoidKeyboard={true}
                
    
-          visible={this.state.modalVisible}
+          isVisible={this.state.modalVisible}
           >
        
-          <SafeAreaView style={[styles.containers, modalBackgroundStyle]} behavior="padding" enabled>
+          <SafeAreaView style={[styles.containers]} behavior="padding" enabled>
+          <ScrollView style={{flex:1,width:'100%'}}>
             <View style={innerContainerTransparentStyle}>
               <View style={{flexDirection:'row',fontSize:16,color:'#0078d7',marginBottom:10}}>
               <TouchableOpacity onPress={() => {
@@ -538,24 +538,27 @@ return(
 )}):null}
 </Picker>       
 </View>  
-                <ImageBackground source={require('../../src/images/strip_bg.png')} resizeMode="cover" style={{width:'100%',height:60,marginBottom:10}}>
+{this.state.post_image==''?<ImageBackground source={require('../../src/images/strip_bg.png')} resizeMode="cover" style={{width:'100%',height:60,marginBottom:10}}>
                     <TouchableOpacity onPress={this.handleChooseImage} style={{width:'100%',height:40,flex:1,flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
                         <Text>BROWSE POST IMAGE</Text>
-                    </TouchableOpacity>
-                </ImageBackground>
+                    </TouchableOpacity></ImageBackground>:<View style={{width:'100%'}}>
+                    <Text>Post Image</Text><TouchableOpacity onPress={this.handleChooseImage} style={{width:'100%',height:120,}}>
+                    <Image source={{uri:this.state.post_image}} style={{height:100, width:100, borderRadius:50,alignSelf:'center',marginBottom:20}}/>
+                    </TouchableOpacity></View>}
                 <Text style={{marginBottom:10,backgroundColor:'white',padding:10,color:'#a9a9a9',fontSize:12}}>Guyhub has no tolerance for potentially objectionable content, such as nudity, pornography, and profanity or abusive users. Also all users of Guyhub  can flag objectionable content and admin will take action on it in maximum 24 hours if the objection is found to be genuine. </Text>
 
-                {this.state.docheck?
+                
                 <TouchableOpacity onPress={this.createPost} style={styles.buttonContainer} 
-                  disabled={this.state.disabledLogin}>
+                  disabled={this.state.docheck}>
                 <Text  style={styles.buttonText}>SUBMIT</Text>
                 </TouchableOpacity>
-                :null}
+                
                 </View>
               </View>
+              </ScrollView>
           </SafeAreaView>
       
-
+          
         </Modal>
             <TouchableOpacity style={{position:'absolute',right:10,bottom:10,width:40,height:40,backgroundColor:'#0078d7',borderRadius:50,flex:1,justifyContent:'center',alignItems:'center'}} onPress={() => {
             this.setModalVisible(true);
@@ -579,8 +582,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#ecf0f1',
-        
       },
       input:{
         height: 40,

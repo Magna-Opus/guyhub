@@ -1,6 +1,6 @@
 
 export const PostWithToken =(types,userData) => {
-//  console.log("Userdata ",userData)
+ console.log("Userdata ",userData)
 //  console.log("Authtoken ",userData.authtoken)
     // let baseUrl='https://heartover.com/Guyhub/wp-json/api/';	
 

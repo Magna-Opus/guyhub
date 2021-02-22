@@ -22,7 +22,7 @@ export default class PublicTweetsList extends Component {
         reason:'',
             modalVisible:false,
             authtoken:'',
-            docheck:true
+            docheck:false
         //tweet:true
     }
     // toggleTweet()
@@ -99,11 +99,11 @@ this.setState({user_id:id})
         {
         console.log(this.props.id,this.props.userid,this.state.reason)
         PostWithToken('report', {authtoken:this.state.authtoken,author:this.props.userid,post_id:this.props.id,reason:this.state.reason,type:'Tweet'}).then((result)=>{
-
+            this.setState({docheck:true})
             if(result.status===201){
                 this.setState({errors:result.message});
             this.setState({reason:''})
-            this.setState({docheck:true})
+            this.setState({docheck:false})
             }
           
         })
@@ -191,14 +191,13 @@ this.setState({user_id:id})
                     
                 </View>
                 <Modal
-                style={{backgroundColor: 'rgba(0,0,0,0.5)'}}
                 avoidKeyboard={true}
                
    
-          visible={this.state.modalVisible}
+          isVisible={this.state.modalVisible}
           >
        
-          <SafeAreaView style={[styles.containers, modalBackgroundStyle]} behavior="padding" enabled>
+          <SafeAreaView style={[styles.containers, ]} behavior="padding" enabled>
             <View style={innerContainerTransparentStyle}>
               <View style={{flexDirection:'row',fontSize:16,color:'#0078d7',marginBottom:10}}>
               <TouchableOpacity onPress={() => {
@@ -236,12 +235,11 @@ this.setState({user_id:id})
                                         </View>
                                     </RadioButton.Group>
                                         {/* </View> */}
-                                        {this.state.docheck?
+                                     
                 <TouchableOpacity onPress={()=>this.reportMessage()} style={styles.buttonContainer} 
-                  disabled={this.state.disabledLogin}>
+                  disabled={this.state.docheck}>
                 <Text  style={styles.buttonText}>SUBMIT</Text>
                 </TouchableOpacity>
-                :null}
                                </View>
                                </View>
                                </SafeAreaView>
@@ -259,7 +257,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#ecf0f1',
         
       },
       input:{

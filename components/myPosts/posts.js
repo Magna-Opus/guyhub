@@ -8,7 +8,7 @@ import { PostWithToken } from './../../services/PostWithToken';
 import { PostImageData } from './../../services/PostImageData';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import ImagePicker from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-community/async-storage';
 import Loader from './../../components/loader/loader';
 import { Picker, Form } from "native-base";
@@ -70,7 +70,7 @@ export default class Home extends Component {
         const options={
             noData:true
         }
-        ImagePicker.launchImageLibrary(options, response=>{
+        launchImageLibrary(options, response=>{
             //console.log('response', response);
             if(response.uri){
                 

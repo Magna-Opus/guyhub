@@ -96,7 +96,7 @@ export default class SplashScreen extends Component {
  
         return (
           <View style={viewStyles}>
-            <Image source={require('../src/images/splashscreen.jpg')} resizeMode="center" style={styles.image} />          
+            <Image source={require('../src/images/splashscreen.jpg')} resizeMode="contain" style={styles.image} />          
           </View>
         );
       

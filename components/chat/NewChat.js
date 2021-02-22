@@ -6,6 +6,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Video from 'react-native-video';
 import ImagePicker from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
+
 import AsyncStorage from '@react-native-community/async-storage';
 import { GetWithToken } from './../../services/GetWithToken';
 import { PostImageData } from './../../services/PostImageData';
@@ -116,7 +118,7 @@ class NewChat extends Component {
          
         };
         
-        ImagePicker.launchImageLibrary(options, response => {
+        launchImageLibrary(options, response => {
           console.log("Responselllll = ", response);
           if (response.didCancel) {
             // do nothing

@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, Image, TouchableOpacity,ScrollView ,Dimensions,TouchableHighlightBase ,Alert, SafeAreaView} from 'react-native';
+import { Platform, StyleSheet, Text, Linking, View, Image, TouchableOpacity,ScrollView ,Dimensions,TouchableHighlightBase ,Alert, SafeAreaView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -24,7 +24,7 @@ export default class PostList extends Component {
             likes:'',
             dislikes:'',
             errors:'',
-            docheck:true,
+            docheck:false,
             user_id:'',
             disabledislikebtn:false,
             disablelikebtn:false,
@@ -132,12 +132,13 @@ export default class PostList extends Component {
         if(this.state.reason!=='')
         {
         console.log(this.props.id,this.props.author,this.state.reason)
+        this.setState({docheck:true})
         PostWithToken('report', {authtoken:this.state.authtoken,author:this.props.author,post_id:this.props.id,reason:this.state.reason,type:'Post'}).then((result)=>{
 
             if(result.status===201){
                 this.setState({errors:result.message});
             this.setState({reason:''})
-            this.setState({docheck:true})
+            this.setState({docheck:false})
             }
           
         })
@@ -235,14 +236,13 @@ getExtention = (filename) => {
         <ScrollView style={{flex:1,width:'100%',borderRadius:4,marginBottom:10, backgroundColor:'white'}}>
                            <SafeAreaView>
                            <Modal
-                style={{backgroundColor: 'rgba(0,0,0,0.5)'}}
                 avoidKeyboard={true}
                
    
-          visible={this.state.modalVisible}
+          isVisible={this.state.modalVisible}
           >
        
-          <SafeAreaView style={[styles.containers, modalBackgroundStyle]} behavior="padding" enabled>
+          <SafeAreaView style={[styles.containers,]} behavior="padding" enabled>
             <View style={innerContainerTransparentStyle}>
               <View style={{flexDirection:'row',fontSize:16,color:'#0078d7',marginBottom:10}}>
               <TouchableOpacity onPress={() => {
@@ -280,12 +280,11 @@ getExtention = (filename) => {
                                         </View>
                                     </RadioButton.Group>
                                         {/* </View> */}
-                                        {this.state.docheck?
+                                        
                 <TouchableOpacity onPress={()=>this.reportMessage()} style={styles.buttonContainer} 
-                  disabled={this.state.disabledLogin}>
+                  disabled={this.state.docheck}>
                 <Text  style={styles.buttonText}>SUBMIT</Text>
                 </TouchableOpacity>
-                :null}
                                </View>
                                </View>
                                </SafeAreaView>
@@ -314,7 +313,7 @@ getExtention = (filename) => {
                     name='calendar-o'
                     type='font-awesome'
                     color='#ccc'></FontAwesome>&nbsp;{this.state.mypost.post_date}</Text>
-            <TouchableOpacity style={{marginRight:10}} onPress={()=>this.downloadImage()} >
+            <TouchableOpacity style={{marginRight:10}} onPress={()=>Platform.OS=='ios'?Linking.openURL(this.state.imageuri):this.downloadImage()} >
             <FontAwesome5
                     raised
                     name='file-download'
@@ -375,7 +374,7 @@ style={{marginRight:10}}/>
             <View style={{paddingHorizontal:10,justifyContent:'center'}}>
                 <Image source={{uri: this.state.imageuri}}resizeMode="cover" style={{width:'100%', height:150}}/>
             </View>
-            <View style={{height:'50%'}}>
+            <View>
                 <Text style={{color:'#a9a9a9',marginTop:5,marginBottom:5,marginTop:10,paddingHorizontal:10}} >{this.state.mypost.content}</Text>
                 <Text></Text>
                 <Text></Text>
@@ -400,7 +399,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#ecf0f1',
         
       },
       input:{

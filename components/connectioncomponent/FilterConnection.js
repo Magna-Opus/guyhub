@@ -19,7 +19,7 @@ class FilterConnections extends Component {
                 <Modal
                     animationType="slide"
                     transparent={false}
-                    visible={this.state.modalVisible}
+                    isVisible={this.state.modalVisible}
                     onRequestClose={() => {
                         Alert.alert('Modal has been closed.');
                     }}>
