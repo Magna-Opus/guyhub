@@ -12,7 +12,7 @@ class MyTransactions extends Component {
     constructor(props){
         super(props)
         this.state={
-            
+            paymentdetails:[]
         }
         
     }
@@ -51,7 +51,7 @@ class MyTransactions extends Component {
                         <Text style={{width:'80%',fontWeight:'700',fontSize:20,marginLeft:15,color:'white'}}>MY TRANSACTIONS</Text>
                     </View> 
                     </View>
-                    <View style={{flex:1,marginTop:10}}>
+                    {this.state.paymentdetails.length>0?<View style={{flex:1,marginTop:10}}>
                     <FlatList
 data={this.state.paymentdetails}
 renderItem={({ item }) => (
@@ -72,7 +72,7 @@ renderItem={({ item }) => (
 )}
 />
 
-</View>
+</View>:<View style={{flex:1,flexDirection:'column', alignItems:'center',paddingTop:80,justifyContent:'center',height:'100%'}}><Text>{'Transactions not found'}</Text></View>}
     </SafeAreaView>
           );
 

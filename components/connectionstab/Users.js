@@ -205,7 +205,7 @@ setModalVisible(visible) {
                <NavigationEvents onDidFocus={ this.getUserData} />
                 
                 
-                <ScrollView scrollEventThrottle={16} >
+                <ScrollView scrollEventThrottle={16} contentContainerStyle={{paddingBottom:100}} >
                 
                     {
                         

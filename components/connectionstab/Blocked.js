@@ -56,7 +56,7 @@ class Following extends Component {
         return (
             <View>
                 <NavigationEvents onDidFocus={ this.getUserData} />
-                <ScrollView scrollEventThrottle={16} >
+                <ScrollView scrollEventThrottle={16} contentContainerStyle={{paddingBottom:100}}>
                 {
                 (items)?items.map((item,index)=>{
                     console.log("Get Log",item.profile_image)

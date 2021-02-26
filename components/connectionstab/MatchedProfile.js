@@ -322,6 +322,8 @@ setPayMent()
           console.log("tttt",this.state.authtoken);
           GetWithToken('getmatches', {authtoken:this.state.authtoken,gender:'',countryid:'',statesid:'',cityid:'',college:''}).then((result)=>{            
             console.log("matches response",result)
+            if(result)
+            {
             if(result.status===1){
                 this.setState({users:result.users})
                 console.log(result)
@@ -333,6 +335,9 @@ setPayMent()
 
                 this.setState({notfound:'No Match Found!'})
             }
+            }
+            else
+            this.setState({notfound:'No Match Found!'})
             this.setState({loading:false})
         })
     
@@ -493,7 +498,7 @@ setModalVisible(visible) {
                 }
 
                 <NavigationEvents onDidFocus={ this.getUserData} />
-                <ScrollView scrollEventThrottle={16} >
+                <ScrollView scrollEventThrottle={16} contentContainerStyle={{paddingBottom:100}} >
                 
                     {
                       this.state.users.length!==0?

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {TextInput, Platform, StyleSheet, Text, View,PermissionsAndroid, SafeAreaView,Image, TouchableOpacity, Button, ScrollView, Dimensions, ImageBackground ,Alert, KeyboardAvoidingView} from 'react-native';
+import {TextInput, Platform, StyleSheet, Text, View,RefreshControl,PermissionsAndroid,ActivityIndicator, SafeAreaView,Image, TouchableOpacity, Button, ScrollView, Dimensions, ImageBackground ,Alert, KeyboardAvoidingView} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PostList from './../dashboardcomponents/PostList';
 import { GetWithoutToken } from './../../services/GetWithoutToken';
@@ -32,6 +32,7 @@ export default class Home extends Component {
             categories:[],
             postList:[],
             modalVisible:false,
+            nomore:false,
             post_image:'',
             errors:'',
             category:undefined,
@@ -39,6 +40,7 @@ export default class Home extends Component {
             post_type:undefined,
             loading:true,
             content:'',
+            loadmore:false,
             authtoken:'',
             docheck:false,
             category_search:'',
@@ -48,13 +50,15 @@ export default class Home extends Component {
             total:'',
             extraloading:false,
             page:1,
+            categoryselect:false,
+            refreshing:false,
             user_id:'',
             notification:"none",
             chat:0
         }
         this.handleChooseImage=this.handleChooseImage.bind(this);
         this.getUserData=this.getUserData.bind(this);
-        this.getnotify=this.getnotify.bind(this);
+        this.getNotification=this.getNotification.bind(this);
 
         this.postByCategory=this.postByCategory.bind(this);
         this.getPostList=this.getPostList.bind(this);
@@ -227,35 +231,44 @@ export default class Home extends Component {
 getPostList=async()=>{
     var userInfo=await AsyncStorage.getItem('token');
     console.log("userid",this.state.user_id)
-    PostWithToken('getpost/all',{authtoken:userInfo,token:userInfo,page:this.state.page,user_id:this.state.user_id}).then((data)=>{
+    PostWithToken('getpost/all',{authtoken:userInfo,token:userInfo,page:1,user_id:this.state.user_id}).then((data)=>{
         console.log("Post Data",data);
         console.log("Post Data",userInfo,this.state.page,this.state.user_id);
-
+        this.setState({loading:false})
             var responsejson=data;
             this.setState({total:data.data.total});
-            // if(data.data.posts){
-            //     this.setState(prevState => {
-            //         return {page: prevState.page + 1}
-            //      })
-            //      console.log(this.state.page);debugger;
-            //     this.setState({extraloading:true});
-            // }
+            if(data.data.posts){
+                this.setState(prevState => {
+                    return {page: prevState.page + 1}
+                 })
+                 console.log(this.state.page);debugger;
+                this.setState({extraloading:true});
+            }
             if(responsejson.status===200){
                 if(data.data.total===0){this.setState({notfound:'Post Not Found!'});}
-                else this.setState({postList:data.data.posts,extraloading:false}); 
-                this.getPostCategory();            
+                else this.setState({postList:data.data.posts}); 
+                this.setState({refreshing:false})
+                // this.getPostCategory();            
              }
-             this.setState({loading:false})
+             
         })
-    
-    
+        this.getNotification()
+        
 }
-postByCategory=(cat_slug)=>{    
-    this.setState({loading:true})
+postByCategory=async(cat_slug)=>{    
+    this.setState({loading:true,page:1,categoryselect:true,nomore:false})
+    var userInfo=await AsyncStorage.getItem('token');
+    console.log("userid",this.state.user_id)
     this.setState({category_search:cat_slug},()=>{
-        PostWithoutToken('getpost/all?category_search='+this.state.category_search,this.state).then((data)=>{
-            
-
+        PostWithoutToken('getpost/all?category_search='+this.state.category_search,{authtoken:userInfo,token:userInfo,page:1,user_id:this.state.user_id}).then((data)=>{
+            this.setState({loading:false})
+            if(data.data.posts){
+                this.setState(prevState => {
+                    return {page: prevState.page + 1}
+                 })
+                 console.log(this.state.page);debugger;
+                this.setState({extraloading:true});
+            }
             var responsejson=data;
             console.log(responsejson);
             this.setState({total:data.data.total});
@@ -263,12 +276,78 @@ postByCategory=(cat_slug)=>{
             if(data.data.total===0){this.setState({notfound:'Post Not Found!'});}
             else {this.setState({postList:data.data.posts});    
             console.log(this.state.postList);}
-            this.setState({loading:false})
+            
 
         })
     });
         
         
+}
+
+loadMore2=async()=>{
+    var userInfo=await AsyncStorage.getItem('token');
+    console.log("userid",this.state.user_id)
+    this.setState({loadmore:true})
+    console.log('jojojojojojo page no:', this.state.page)
+    PostWithoutToken('getpost/all?category_search='+this.state.category_search,{authtoken:userInfo,token:userInfo,page:this.state.page,user_id:this.state.user_id}).then((data)=>{
+        console.log("Post Data",data);
+        console.log("Post Data",userInfo,this.state.page,this.state.user_id);
+
+            var responsejson=data;
+            
+            if(data.data.posts){
+                this.setState(prevState => {
+                    return {page: prevState.page + 1}
+                 })
+                 console.log(this.state.page);debugger;
+                // this.setState({extraloading:true});
+            }
+            if(responsejson.status===200){
+                if(data.data.total===0){
+                    this.setState({nomore:true});
+                }
+                else {
+                    var {postList}=this.state
+                    for(var j=0;j<data.data.posts.length;j++)
+                    postList.push(data.data.posts[j])
+                    this.setState({postList:postList,extraloading:true})
+                } 
+                // this.getPostCategory();            
+             }
+             this.setState({loading:false,loadmore:false})
+        })
+}
+
+loadMore=async()=>{
+    var userInfo=await AsyncStorage.getItem('token');
+    console.log("userid",this.state.user_id)
+    this.setState({loadmore:true})
+    PostWithToken('getpost/all',{authtoken:userInfo,token:userInfo,page:this.state.page,user_id:this.state.user_id}).then((data)=>{
+        console.log("Post Data",data);
+        console.log("Post Data",userInfo,this.state.page,this.state.user_id);
+
+            var responsejson=data;
+            if(data.data.posts){
+                this.setState(prevState => {
+                    return {page: prevState.page + 1}
+                 })
+                 console.log(this.state.page);debugger;
+                // this.setState({extraloading:true});
+            }
+            if(responsejson.status===200){
+                if(data.data.total===0){
+                    this.setState({nomore:true});
+                }
+                else {
+                    var {postList}=this.state
+                    for(var j=0;j<data.data.posts.length;j++)
+                    postList.push(data.data.posts[j])
+                    this.setState({postList:postList,extraloading:true})
+                } 
+                // this.getPostCategory();            
+             }
+             this.setState({loading:false,loadmore:false})
+        })
 }
 
 
@@ -278,14 +357,10 @@ componentDidMount(){
     this.getUserData();
     this.getPostCategory(); 
     this.request_storage_runtime_permission();
-    this.getnotify()
+    
 
 }
 
-getnotify()
-{
-    this.getNotification()
-}
 
 checknotification()
 {
@@ -295,7 +370,7 @@ checknotification()
     }
     else
     {
-        Actions.notifollow({hideNavBar: true,followers:this.state.notificationdata,getdata:this.getnotify.bind(this)})
+        Actions.notifollow({hideNavBar: true,followers:this.state.notificationdata,getdata:this.getNotification.bind(this)})
     }
 }
 
@@ -317,7 +392,7 @@ checknotification()
          <SafeAreaView style={{flex:1}}>
                 <View style={styles.container}>
                     {/* <NavigationEvents onDidFocus={ this.getUserData,this.getnotify()} />  */}
-                    {console.log("Vallll",this.state.notification)}
+                    
                     <View style={{width:'100%',paddingHorizontal:15,height:50,backgroundColor:'#0078d7',flexDirection:'row',alignItems:'center',justifyContent:'space-between'}}>
                     <View style={{flexDirection:'row',alignItems:'center',justifyContent:'flex-start'}}>
                      <TouchableOpacity onPress={()=>  this.props.navigation.openDrawer()}>
@@ -396,7 +471,15 @@ checknotification()
                             //   this.getPostList();
                             }
                           }}
-
+                          refreshControl={
+                            <RefreshControl
+                              refreshing={this.state.refreshing}
+                              onRefresh={()=>{
+                                  this.setState({refreshing:true,postList:[]})
+                                  this.getPostList()
+                              }}
+                            />
+                          }
                         >
 
                                 {
@@ -428,7 +511,6 @@ checknotification()
 
                                             //     }
                                             // })
-
                                         return(
                                             
                                             <PostList key={singlePost.ID} id={singlePost.ID} userid={singlePost.userid} title={singlePost.title} imageUrl={imageuri} description={singlePost.content} dislikes={(singlePost.unlikes[0])?singlePost.unlikes[0].unlikes:0} like={(singlePost.likes[0])?singlePost.likes[0].likes:0} postedDate={singlePost.post_date} width={width} shareurl={singlePost.posturl} post_type={singlePost.post_type} username={singlePost.username}/> 
@@ -436,12 +518,22 @@ checknotification()
                                         )
                                     })
                                     :<View style={{flex:1,flexDirection:'column', alignItems:'center',paddingTop:80,justifyContent:'center',height:'100%'}}><Text>{this.state.notfound}</Text></View>
-                                }                                            
+                                }
+                                {
+                    (this.state.extraloading&&!this.state.loadmore&&this.state.notfound==''&&!this.state.nomore&&!this.state.refreshing)?
+                    <TouchableOpacity style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}} onPress={()=>{
+                        if(this.state.categoryselect)
+                        this.loadMore2()
+                        else
+                        this.loadMore()
+                    
+                    }}><Text style={{marginBottom:10}}>Load More</Text></TouchableOpacity>:null
+                } 
+                {(this.state.loadmore)?
+                    <View style={{height:80}}><ActivityIndicator size='small'/></View>:null
+                }                                            
                         </ScrollView>
-                        {
-                    (this.state.extraloading)?
-                    <View style={{flex:1,flexDirection:'column',alignItems:'center',justifyContent:'center'}}><Text>Loading More...</Text></View>:null
-                }
+                        
                     </View>
                     
                 </View>

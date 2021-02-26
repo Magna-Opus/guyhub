@@ -47,7 +47,7 @@ class Friends extends Component {
         return (
             <View style={styles.container}>
                 <NavigationEvents onDidFocus={ this.getUserData} />
-                <ScrollView scrollEventThrottle={16} >
+                <ScrollView scrollEventThrottle={16} contentContainerStyle={{paddingBottom:100}}>
                 {
                 (items)?items.map((item,index)=>{
                     var imageurl='';

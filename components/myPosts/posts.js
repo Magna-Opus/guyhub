@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {TextInput, Modal, Platform, StyleSheet, Text, View, SafeAreaView,Image, TouchableOpacity, Button, ScrollView, Dimensions, ImageBackground ,Alert} from 'react-native';
+import {TextInput, Modal, Platform, StyleSheet, RefreshControl,Text, View, SafeAreaView,Image, TouchableOpacity, Button, ScrollView, Dimensions, ImageBackground ,Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import PostList from './postlist';
 import { GetWithoutToken } from './../../services/GetWithoutToken';
@@ -31,6 +31,7 @@ export default class Home extends Component {
             modalVisible:false,
             post_image:'',
             errors:'',
+            refreshing:false,
             category:undefined,
             title:'',
             post_type:undefined,
@@ -182,7 +183,8 @@ getPostList=()=>{
             if(responsejson.status===200){
                 if(data.data.total===0){this.setState({notfound:'Post Not Found!'});}
                 else this.setState({postList:data.data.posts,extraloading:false}); 
-                this.getPostCategory();            
+                // this.getPostCategory();
+                this.setState({refreshing:false})            
              }
          this.setState({loading:false})
 
@@ -191,7 +193,7 @@ getPostList=()=>{
     
 }
 postByCategory=(cat_slug)=>{    
-
+    this.setState({loading:true})
     this.setState({category_search:cat_slug},()=>{
         console.log("Authtoken: ",this.state)
         console.log("Authtoken is: ",this.state.authtoken)
@@ -281,7 +283,15 @@ componentDidMount(){
                             //   this.getPostList();
                             }
                           }}
-
+                          refreshControl={
+                            <RefreshControl
+                              refreshing={this.state.refreshing}
+                              onRefresh={()=>{
+                                  this.setState({refreshing:true,postList:[]})
+                                  this.getPostList()
+                              }}
+                            />
+                          }
                         >
                                 {
                                     (this.state.total>0)?
