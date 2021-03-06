@@ -1488,7 +1488,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/GuyHub\"",
 				);
-				MARKETING_VERSION = 1.9;
+				MARKETING_VERSION = 1.10;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1532,7 +1532,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/GuyHub\"",
 				);
-				MARKETING_VERSION = 1.9;
+				MARKETING_VERSION = 1.10;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

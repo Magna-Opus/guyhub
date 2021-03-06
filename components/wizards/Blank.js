@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, Picker, StyleSheet, Text,TextInput, ImageBackground,View, SafeAreaView,Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { RadioButton } from 'react-native-paper';
 import ImagePicker from 'react-native-image-picker';
 import { RegisterData } from './../../services/RegisterData';
 import AsyncStorage from '@react-native-community/async-storage';

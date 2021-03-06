@@ -519,15 +519,15 @@ updateProfile=()=>{
                                     value={this.state.gender}
                                 >
                                     <View style={{flexDirection:'row',height:40,alignItems:'center',marginRight:15}}>
-                                    <RadioButton value="Male" style={{marginRight:3}} />          
+                                    <RadioButton.Android value="Male" style={{marginRight:3}} onPress={(value)=>this.setState({gender:value})} status={ this.state.gender === 'Male' ? 'checked' : 'unchecked' }/>          
                                     <Text>Male</Text>
                                     </View>
                                     <View style={{flexDirection:'row',height:40,alignItems:'center',marginRight:15}}>
-                                    <RadioButton value="Female" style={{marginRight:3}} />          
+                                    <RadioButton.Android value="Female" style={{marginRight:3}} onPress={(value)=>this.setState({gender:value})} status={ this.state.gender === 'Female' ? 'checked' : 'unchecked' }/>          
                                     <Text>Female</Text>
                                     </View>
                                     <View style={{flexDirection:'row',height:40,alignItems:'center',marginRight:15}}>
-                                    <RadioButton value="Others" style={{marginRight:3}} />          
+                                    <RadioButton.Android value="Others" style={{marginRight:3}} onPress={(value)=>this.setState({gender:value})} status={ this.state.gender === 'Others' ? 'checked' : 'unchecked' }/>          
                                     <Text>Not Specified</Text>
                                     </View>
                                 </RadioButton.Group>

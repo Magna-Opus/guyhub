@@ -165,11 +165,11 @@ radioReset=()=>{
                   value={this.state.checkedValue}
               >
                   <View style={{flexDirection:'row',height:40,alignItems:'center',marginRight:15}}>
-                  <RadioButton value='Yes' style={{marginRight:3}} color='#0078d7' />          
+                  <RadioButton.Android value='Yes' style={{marginRight:3}} color='#0078d7'  onPress={(value)=>this.setState({checkedValue:value})} status={ this.state.checkedValue === 'Yes' ? 'checked' : 'unchecked' }/>          
                   <Text>Yes</Text>
                   </View>
                   <View style={{flexDirection:'row',height:40,alignItems:'center',marginRight:15}}>
-                  <RadioButton value="No" style={{marginRight:3}} color='#0078d7'/>          
+                  <RadioButton.Android value="No" style={{marginRight:3}} color='#0078d7'  onPress={(value)=>this.setState({checkedValue:value})} status={ this.state.checkedValue === 'No' ? 'checked' : 'unchecked' }/>          
                   <Text>No</Text>
                   </View>
                   {/* <View style={{flexDirection:'row',height:40,alignItems:'center',marginRight:15}}>

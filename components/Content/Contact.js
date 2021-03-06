@@ -4,7 +4,6 @@ import { Platform, Picker, StyleSheet, Text,TextInput, View, SafeAreaView,Image,
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 import Zocial from 'react-native-vector-icons/Zocial';
-import { RadioButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-community/async-storage';
 import DatePicker from 'react-native-datepicker';
 import { PostData } from './../../services/PostData';

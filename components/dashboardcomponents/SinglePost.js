@@ -267,15 +267,15 @@ getExtention = (filename) => {
                                         value={this.state.reason}
                                     >
                                         <View style={{flexDirection:'row',height:40,alignItems:'center',marginRight:15}}>
-                                        <RadioButton value="Contains suspicious link" style={{marginRight:3}} color='#0078d7'/>          
+                                        <RadioButton.Android value="Contains suspicious link" style={{marginRight:3}} color='#0078d7' onPress={(value)=>this.setState({reason:value})} status={ this.state.reason === 'Contains suspicious link' ? 'checked' : 'unchecked' }/>          
                                         <Text style={{color:'#666'}}>Contains suspicious link</Text>
                                         </View>
                                         <View style={{flexDirection:'row',height:40,alignItems:'center',marginRight:15}}>
-                                        <RadioButton value="Contains threatening abusive or offensive language or media" style={{marginRight:3}} color='#0078d7'/>          
+                                        <RadioButton.Android value="Contains threatening abusive or offensive language or media" style={{marginRight:3}} color='#0078d7' onPress={(value)=>this.setState({reason:value})} status={ this.state.reason === 'Contains threatening abusive or offensive language or media' ? 'checked' : 'unchecked' }/>          
                                         <Text style={{color:'#666'}}>Contains threatening abusive or offensive language or media</Text>
                                         </View>
                                         <View style={{flexDirection:'row',height:40,alignItems:'center',marginRight:15}}>
-                                        <RadioButton value="Contains unauthorized content" style={{marginRight:3}} color='#0078d7'/>          
+                                        <RadioButton.Android value="Contains unauthorized content" style={{marginRight:3}} color='#0078d7' onPress={(value)=>this.setState({reason:value})} status={ this.state.reason === 'Contains unauthorized content' ? 'checked' : 'unchecked' }/>          
                                         <Text style={{color:'#666'}}>Contains unauthorized content</Text>
                                         </View>
                                     </RadioButton.Group>

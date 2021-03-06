@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Platform, Picker, StyleSheet, Text,TextInput, View, SafeAreaView,Image, TouchableOpacity, ScrollView, Dimensions,FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { RadioButton } from 'react-native-paper';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import AsyncStorage from '@react-native-community/async-storage';
 import DatePicker from 'react-native-datepicker';

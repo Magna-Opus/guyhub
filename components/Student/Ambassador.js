@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { Platform, Picker, StyleSheet, Text,TextInput, View, SafeAreaView,Image, TouchableOpacity, ScrollView, Dimensions,ImageBackground } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Zocial from 'react-native-vector-icons/Zocial';
-import { RadioButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-community/async-storage';
 import DatePicker from 'react-native-datepicker';
 import { PostData } from './../../services/PostData';

@@ -424,15 +424,15 @@ export default class Userinfo extends Component {
                                         value={this.state.gender}
                                     >
                                         <View style={{flexDirection:'row',height:40,alignItems:'center',marginRight:15}}>
-                                        <RadioButton value="Male" style={{marginRight:3}} color='#0078d7'/>          
+                                        <RadioButton.Android value="Male" style={{marginRight:3}} color='#0078d7' onPress={(value)=>this.setState({gender:value})} status={ this.state.gender === 'Male' ? 'checked' : 'unchecked' }/>          
                                         <Text>Male</Text>
                                         </View>
                                         <View style={{flexDirection:'row',height:40,alignItems:'center',marginRight:15}}>
-                                        <RadioButton value="Female" style={{marginRight:3}} color='#0078d7'/>          
+                                        <RadioButton.Android value="Female" style={{marginRight:3}} color='#0078d7' onPress={(value)=>this.setState({gender:value})} status={ this.state.gender === 'Female' ? 'checked' : 'unchecked' }/>          
                                         <Text>Female</Text>
                                         </View>
                                         <View style={{flexDirection:'row',height:40,alignItems:'center',marginRight:15}}>
-                                        <RadioButton value="Others" style={{marginRight:3}} color='#0078d7'/>          
+                                        <RadioButton.Android value="Others" style={{marginRight:3}} color='#0078d7' onPress={(value)=>this.setState({gender:value})} status={ this.state.gender === 'Others' ? 'checked' : 'unchecked' }/>          
                                         <Text>Not Specified</Text>
                                         </View>
                                     </RadioButton.Group>
@@ -880,7 +880,7 @@ zIndex: 10
                                         value={this.state.privacy}
                                     >
                                         <View style={{flexDirection:'row',height:40,alignItems:'center',marginRight:15,}}>
-                                        <RadioButton value="yes" style={{marginRight:3}} color='#0078d7'/>          
+                                        <RadioButton.Android value="yes" style={{marginRight:3}} color='#0078d7'  onPress={(value)=>this.setState({privacy:value})} status={ this.state.privacy === 'yes' ? 'checked' : 'unchecked' }/>          
                                         <View style={{width:'100%',flexDirection:'row'}}><Text>I Agree to the </Text><TouchableOpacity onPress={()=>Actions.privacypolicy()}><Text style={{color:'blue'}}>Privacy Policy </Text></TouchableOpacity><Text>of GuyHub.</Text></View>
                                        
                                         </View>
